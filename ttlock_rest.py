@@ -91,7 +91,7 @@ def unlock(lock):
     return handle_unlock(lock)
 
 @app.route("/<lock>/lock",methods = ['POST', 'GET'])
-def unlock(lock):
+def lock(lock):
     return handle_lock(lock) 
  
 @app.route("/<lock>/users",methods = ['GET'])
