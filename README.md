@@ -11,7 +11,7 @@ Requires gateway and uses TT lock API
 curl --location -g --request POST 'https://euapi.ttlock.com/v3/user/register' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
 --data-urlencode 'clientId=your id' \
---data-urlencode 'client=your secret' \
+--data-urlencode 'clientSecret=your secret' \
 --data-urlencode 'username=lockuser' \
 --data-urlencode 'password=your application users password md5 hashed' \
 --data-urlencode 'date=1650909361599'
