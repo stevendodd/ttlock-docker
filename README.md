@@ -41,9 +41,9 @@ docker run \
 ```
 rest:
   - scan_interval: 60
-    resource: http://192.168.1.162:8125/123
+    resource: http://192.168.1.100:5000/123
     sensor:
-      - name: "Front Door"
+      - name: "Front Door Lock"
         value_template: "OK"
         json_attributes:
           - "autoLockTime"
@@ -56,8 +56,33 @@ rest:
           - "passageModeAutoUnlock"
           - "soundVolume"
           - "tamperAlert"
+
+  - scan_interval: 60
+    resource: http://192.168.1.100:5000/123/getstatus
+    sensor:
+      - name: "Front Door ttlock Status"
+        value_template: "{{ value_json.state }}"
+        unique_id: frontdoor_ttlock_status
+        json_attributes:
+          - "sensorState"
+          - "state"
+
+
 rest_command:
-  unlock_door:
-    url: "http://192.168.1.162:8125/123/unlock"
+  unlock_front_door:
+    url: "http://192.168.1.100:5000/123/unlock"
     method: get
+  lock_front_door:
+    url: "http://192.168.1.100:5000/123/lock"
+    method: get
+
+lock: 
+  - platform: template
+    name: Front Door
+    value_template: "{{ state_attr('sensor.frontdoor_ttlock_status', 'state') | int(0) != 1 }}"
+    optimistic: true
+    lock: 
+      - service: rest_command.lock_front_door
+    unlock: 
+      - service: rest_command.unlock_front_door
 ```
